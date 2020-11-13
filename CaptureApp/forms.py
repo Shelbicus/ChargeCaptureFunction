@@ -23,3 +23,6 @@ class ChargeForm(forms.Form):
             returns: Total cost of visit(int)"""
         cost = int(self.cleaned_data["modal_type"]) + int(self.cleaned_data ["time_amount"])
         print(cost)
+        return(cost)
+
+        

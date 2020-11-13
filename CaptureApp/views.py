@@ -18,7 +18,10 @@ def home_view(request):
     context['form']= ChargeForm()
     print(context)
     return render(request,"home.html", context)
-    
+
+from django.core.mail import send_mail
+from django.conf import settings
+
 def thanks_view(request):
     context={}
     if request.method == "POST":
@@ -26,10 +29,16 @@ def thanks_view(request):
         if resp_form.is_valid():
             print(resp_form)
             print(resp_form.cleaned_data)
-            print(resp_form.cleaned_data["patient_email"])
-            print(resp_form.calcPrice())
-    print(request)
-    print(context)
+            patient_email = (resp_form.cleaned_data["patient_email"])
+            cost = (resp_form.calcPrice())
+            send_mail(
+                subject = 'Account Balance',
+                message = 'Your account balance is' + ' '+ '$' + str(cost), 
+                from_email = 'thetesttester3@gmail.com',
+                recipient_list = [patient_email],
+                fail_silently= False
+            )
+            #send_mail(subject, message, from_email, recipient_list)
     return render(request,"thanks.html", context)
     
 
